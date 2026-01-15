@@ -28,6 +28,9 @@ declare -A TOOLS=(
   ["caddy"]="version"
   ["nodejs"]="--version"
   ["tmux"]="-V"
+  ["shellcheck"]="--version"
+  ["shfmt"]="--version"
+  ["promtool"]="version"
 )
 
 # Tools that need special handling or are slow to install

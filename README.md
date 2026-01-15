@@ -34,6 +34,9 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `jwt-cli` - JWT encode/decode/sign tool
 - `tmux` - Terminal multiplexer
 - `overmind` - Process manager for Procfile-based applications
+- `shellcheck` - Shell script analysis tool
+- `shfmt` - Shell script formatter
+- `promtool` - Prometheus configuration checking tool
 
 **Other:**
 - `caddy` - Fast web server with automatic HTTPS
@@ -43,7 +46,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 
 ### Quick Install (All Tools)
 
-Install all 18 supported tools with a single command:
+Install all supported tools with a single command:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/SmartestEdu/asdf-plugins/main/install-all.sh | bash
@@ -110,6 +113,9 @@ asdf plugin add overmind https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add sinker https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add tmux https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add nodejs https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add shellcheck https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add shfmt https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add promtool https://github.com/SmartestEdu/asdf-plugins.git
 ```
 
 ## How It Works
@@ -131,21 +137,20 @@ Some tools may have limited platform support. Check tool-specific documentation 
 
 ## System Dependencies
 
-Most tools are distributed as pre-built binaries and require no system dependencies. However, some tools require compilation and need system libraries:
+Most tools are distributed as pre-built binaries and require no system dependencies.
 
 ### tmux
-Requires the following system libraries to compile:
-- `libevent` (libevent-dev on Debian/Ubuntu, libevent on macOS via Homebrew)
-- `ncurses` (libncurses-dev on Debian/Ubuntu, ncurses on macOS via Homebrew)
-- Build tools: `gcc`, `make`, `pkg-config`
+tmux is compiled from source and bundles its dependencies (libevent and ncurses). Only basic build tools are required:
+- `gcc`, `make`, `pkg-config`, `autoconf`, `automake`
 
-**Install dependencies:**
+**Install build tools:**
 ```bash
 # Ubuntu/Debian
-sudo apt-get install libevent-dev libncurses-dev build-essential pkg-config
+sudo apt-get install build-essential pkg-config autoconf automake
 
 # macOS
-brew install libevent ncurses pkg-config
+xcode-select --install
+brew install pkg-config autoconf automake
 ```
 
 ## Environment Variables

@@ -7,6 +7,7 @@ set -euo pipefail
 
 readonly REPO="tmux/tmux"
 readonly LIBEVENT_VERSION="2.1.12"
+readonly NCURSES_VERSION="6.4"
 
 list_all_versions() {
   list_github_versions "$REPO" | sort_versions | tr '\n' ' '
@@ -34,7 +35,7 @@ download_tool() {
   download_file "$url" "$download_path/tmux.zip"
 
   echo "Extracting tmux..."
-  unzip -q "$download_path/tmux.zip" -d "$download_path" || error_exit "Failed to extract tmux"
+  unzip -qo "$download_path/tmux.zip" -d "$download_path" || error_exit "Failed to extract tmux"
 }
 
 install_libevent() {
@@ -53,13 +54,43 @@ install_libevent() {
   cd "libevent-${LIBEVENT_VERSION}-stable"
 
   echo "Configuring libevent..."
-  ./configure --prefix="$install_path" --disable-shared || error_exit "Failed to configure libevent"
+  ./configure --prefix="$install_path" --enable-shared || error_exit "Failed to configure libevent"
 
   echo "Building libevent..."
   make -j"${ASDF_CONCURRENCY:-1}" || error_exit "Failed to build libevent"
 
   echo "Installing libevent..."
   make install || error_exit "Failed to install libevent"
+}
+
+install_ncurses() {
+  local install_path="$1"
+  local tmp_dir="$2"
+
+  echo "Building ncurses ${NCURSES_VERSION}..."
+
+  cd "$tmp_dir"
+
+  local ncurses_url="https://invisible-island.net/archives/ncurses/ncurses-${NCURSES_VERSION}.tar.gz"
+
+  curl_wrapper -fsSL -o ncurses.tar.gz "$ncurses_url" || error_exit "Failed to download ncurses"
+  tar -zxf ncurses.tar.gz || error_exit "Failed to extract ncurses"
+
+  cd "ncurses-${NCURSES_VERSION}"
+
+  echo "Configuring ncurses..."
+  ./configure --prefix="$install_path" \
+    --with-shared \
+    --with-termlib \
+    --enable-pc-files \
+    --with-pkg-config-libdir="$install_path/lib/pkgconfig" \
+    || error_exit "Failed to configure ncurses"
+
+  echo "Building ncurses..."
+  make -j"${ASDF_CONCURRENCY:-1}" || error_exit "Failed to build ncurses"
+
+  echo "Installing ncurses..."
+  make install || error_exit "Failed to install ncurses"
 }
 
 install_tool() {
@@ -73,8 +104,9 @@ install_tool() {
   build_dir="$(mktemp -d)"
   trap 'rm -rf "$build_dir"' EXIT
 
-  # Install libevent first
+  # Install dependencies
   install_libevent "$install_path" "$build_dir"
+  install_ncurses "$install_path" "$build_dir"
 
   # Now compile tmux
   cd "$download_path/tmux-${version}"
@@ -83,9 +115,8 @@ install_tool() {
   ./autogen.sh || error_exit "Failed to run autogen.sh"
 
   echo "Configuring tmux..."
+  PKG_CONFIG_PATH="$install_path/lib/pkgconfig" \
   ./configure --prefix="$install_path" \
-    CFLAGS="-I${install_path}/include" \
-    LDFLAGS="-L${install_path}/lib -Wl,-rpath,${install_path}/lib" \
     || error_exit "Failed to configure tmux"
 
   echo "Building tmux..."
