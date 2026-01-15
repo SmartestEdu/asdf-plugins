@@ -14,28 +14,21 @@ list_all_versions() {
 get_download_url() {
   local version="$1"
   local os
-  local arch
 
   os="$(get_os)"
-  arch="$(get_arch)"
 
-  # Map to jwt-cli's naming conventions
+  # jwt-cli uses simple naming: jwt-linux.tar.gz, jwt-macOS.tar.gz
+  # Note: Using the musl variant for Linux for better compatibility
   case "$os" in
     darwin)
-      os="apple-darwin"
+      os="macOS"
       ;;
     linux)
-      os="unknown-linux-musl"
+      os="linux-musl"
       ;;
   esac
 
-  case "$arch" in
-    amd64) arch="x86_64" ;;
-    arm64) arch="aarch64" ;;
-    *) error_exit "jwt-cli does not support architecture: $arch" ;;
-  esac
-
-  echo "https://github.com/${REPO}/releases/download/${version}/jwt-${arch}-${os}.tar.gz"
+  echo "https://github.com/${REPO}/releases/download/${version}/jwt-${os}.tar.gz"
 }
 
 download_tool() {

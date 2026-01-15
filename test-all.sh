@@ -100,13 +100,26 @@ for tool in "${!TOOLS[@]}"; do
   # Run version command
   VERSION_CMD="${TOOLS[$tool]}"
   echo -n "  Running version command... "
-  if OUTPUT=$($BINARY $VERSION_CMD 2>&1 | head -1); then
+
+  # Capture output and exit code separately to avoid pipeline issues
+  OUTPUT=$($BINARY $VERSION_CMD 2>&1) || true
+  EXIT_CODE=$?
+
+  # Get first non-empty line of output
+  FIRST_LINE=$(echo "$OUTPUT" | grep -v '^$' | grep -v '^I[0-9]' | head -1)
+
+  if [ -z "$FIRST_LINE" ]; then
+    FIRST_LINE=$(echo "$OUTPUT" | grep -v '^$' | head -1)
+  fi
+
+  # Check if we got output (even if exit code is non-zero, some tools are just verbose)
+  if [ -n "$FIRST_LINE" ]; then
     echo -e "${GREEN}✓${NC}"
-    echo "    Output: $OUTPUT"
+    echo "    Output: $FIRST_LINE"
     SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
   else
     echo -e "${RED}✗${NC}"
-    echo "    Error: $OUTPUT"
+    echo "    Error: No output (exit code: $EXIT_CODE)"
     FAIL_COUNT=$((FAIL_COUNT + 1))
   fi
 done

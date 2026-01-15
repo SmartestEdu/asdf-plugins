@@ -8,7 +8,8 @@ set -euo pipefail
 readonly REPO="bitnami-labs/sealed-secrets"
 
 list_all_versions() {
-  list_github_versions "$REPO" | sort_versions | tr '\n' ' '
+  # Filter out helm- releases, only keep kubeseal versions
+  list_github_versions "$REPO" | grep -v "^helm-" | sort_versions | tr '\n' ' '
 }
 
 get_download_url() {
