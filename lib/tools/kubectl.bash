@@ -8,7 +8,8 @@ set -euo pipefail
 readonly REPO="https://github.com/kubernetes/kubernetes.git"
 
 list_all_versions() {
-  list_git_versions "$REPO" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort_versions | tr '\n' ' '
+  # Only list the latest 20 versions to speed up listing (kubectl has hundreds of versions)
+  list_git_versions "$REPO" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort_versions | tail -20 | tr '\n' ' '
 }
 
 get_download_url() {
