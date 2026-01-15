@@ -52,22 +52,35 @@ if ! command -v asdf &>/dev/null; then
   exit 1
 fi
 
-echo "Removing any existing plugins for these tools..."
+echo "Installing/updating plugins from $REPO_URL..."
 for tool in "${TOOLS[@]}"; do
   if asdf plugin list 2>/dev/null | grep -q "^${tool}$"; then
-    echo "  Removing: $tool"
-    asdf plugin remove "$tool" 2>&1 | sed 's/^/    /' || true
-  fi
-done
+    # Plugin exists, check if it has the correct URL
+    existing_url=$(asdf plugin list --urls 2>/dev/null | grep "^${tool}" | awk '{print $2}')
 
-echo ""
-echo "Adding plugins from $REPO_URL..."
-for tool in "${TOOLS[@]}"; do
-  echo "  Adding: $tool"
-  if asdf plugin add "$tool" "$REPO_URL" 2>&1 | sed 's/^/    /'; then
-    echo "    ✓ Success"
+    if [ "$existing_url" = "$REPO_URL" ]; then
+      echo "  Updating: $tool (already installed from correct URL)"
+      if asdf plugin update "$tool" 2>&1 | sed 's/^/    /'; then
+        echo "    ✓ Updated"
+      else
+        echo "    ✗ Update failed"
+      fi
+    else
+      echo "  Replacing: $tool (was installed from $existing_url)"
+      asdf plugin remove "$tool" 2>&1 | sed 's/^/    /' || true
+      if asdf plugin add "$tool" "$REPO_URL" 2>&1 | sed 's/^/    /'; then
+        echo "    ✓ Added"
+      else
+        echo "    ✗ Failed"
+      fi
+    fi
   else
-    echo "    ✗ Failed"
+    echo "  Adding: $tool"
+    if asdf plugin add "$tool" "$REPO_URL" 2>&1 | sed 's/^/    /'; then
+      echo "    ✓ Added"
+    else
+      echo "    ✗ Failed"
+    fi
   fi
 done
 
