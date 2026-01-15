@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Get the directory containing this script
+readonly script_dir="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly plugin_dir="$(dirname "$script_dir")"
+
+# Source utilities
+# shellcheck source=../lib/utils.bash
+source "${plugin_dir}/lib/utils.bash"
+
+# Determine tool name from plugin directory
+readonly tool_name="$(basename "$plugin_dir")"
+
+# Source tool-specific implementation
+readonly tool_script="${plugin_dir}/lib/tools/${tool_name}.bash"
+
+if [ ! -f "$tool_script" ]; then
+  error_exit "Tool '${tool_name}' is not supported. Tool script not found at: ${tool_script}"
+fi
+
+# shellcheck source=/dev/null
+source "$tool_script"
+
+# Call tool-specific install function
+if ! command -v install_tool &>/dev/null; then
+  error_exit "Tool '${tool_name}' does not implement install_tool function"
+fi
+
+install_tool "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_DOWNLOAD_PATH" "$ASDF_INSTALL_PATH"
