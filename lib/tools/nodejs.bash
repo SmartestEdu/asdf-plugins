@@ -71,5 +71,12 @@ install_tool() {
 
   # Copy the extracted directory contents
   cp -r "$download_path/node-v${version}-${os}-${arch}"/* "$install_path/"
+
+  # Enable corepack if it exists (available in Node.js 16.10+)
+  if [ -f "$install_path/bin/corepack" ]; then
+    echo "Enabling corepack..."
+    "$install_path/bin/corepack" enable || echo "Warning: Failed to enable corepack"
+  fi
+
   echo "Installed nodejs to $install_path"
 }
