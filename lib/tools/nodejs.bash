@@ -75,7 +75,7 @@ install_tool() {
   # Enable corepack if it exists (available in Node.js 16.10+)
   if [ -f "$install_path/bin/corepack" ]; then
     echo "Enabling corepack..."
-    "$install_path/bin/corepack" enable || echo "Warning: Failed to enable corepack"
+    "$install_path/bin/corepack" enable --install-directory "$install_path/bin" || echo "Warning: Failed to enable corepack"
   fi
 
   echo "Installed nodejs to $install_path"
