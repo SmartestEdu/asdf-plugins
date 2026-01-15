@@ -8,7 +8,7 @@ set -euo pipefail
 readonly REPO="jqlang/jq"
 
 list_all_versions() {
-  list_github_versions "$REPO" | sort_versions | tr '\n' ' '
+  list_github_versions "$REPO" | sed 's/^jq-//' | sort_versions | tr '\n' ' '
 }
 
 get_download_url() {

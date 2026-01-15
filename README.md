@@ -40,7 +40,25 @@ This plugin currently supports 22 tools:
 
 ## Installation
 
-Install tools by adding this plugin with the tool name:
+### Quick Install (All Tools)
+
+Install all 18 supported tools with a single command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/SmartestEdu/asdf-plugins/main/install-all.sh | bash
+```
+
+Or download and run the script:
+
+```bash
+wget https://raw.githubusercontent.com/SmartestEdu/asdf-plugins/main/install-all.sh
+chmod +x install-all.sh
+./install-all.sh
+```
+
+### Manual Installation
+
+Install tools individually by adding this plugin with the tool name:
 
 ```bash
 # Add the plugin for each tool you want to use
