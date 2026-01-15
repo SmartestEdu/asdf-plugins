@@ -17,6 +17,7 @@ TOOLS=(
   "jq"
   "yq"
   "kubectl"
+  "kubectl-slice"
   "kustomize"
   "kops"
   "kubeseal"

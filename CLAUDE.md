@@ -85,7 +85,7 @@ Test plugins locally before committing:
 asdf plugin add <tool-name> /home/dobes/projects/formative/asdf-plugins/asdf-<tool-name>
 
 # List available versions
-asdf list-all <tool-name>
+asdf list all <tool-name>
 
 # Install a version
 asdf install <tool-name> <version>

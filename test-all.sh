@@ -15,6 +15,7 @@ declare -A TOOLS=(
   ["jq"]="--version"
   ["yq"]="--version"
   ["kubectl"]="version --client"
+  ["kubectl-slice"]="--version"
   ["kustomize"]="version"
   ["kops"]="version"
   ["kubeseal"]="--version"
