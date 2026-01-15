@@ -54,7 +54,7 @@ install_libevent() {
   cd "libevent-${LIBEVENT_VERSION}-stable"
 
   echo "Configuring libevent..."
-  ./configure --prefix="$install_path" --enable-shared || error_exit "Failed to configure libevent"
+  ./configure --prefix="$install_path" --disable-shared || error_exit "Failed to configure libevent"
 
   echo "Building libevent..."
   make -j"${ASDF_CONCURRENCY:-1}" || error_exit "Failed to build libevent"
@@ -116,6 +116,7 @@ install_tool() {
 
   echo "Configuring tmux..."
   PKG_CONFIG_PATH="$install_path/lib/pkgconfig" \
+  LDFLAGS="-L$install_path/lib -Wl,-rpath,$install_path/lib" \
   ./configure --prefix="$install_path" \
     || error_exit "Failed to configure tmux"
 
