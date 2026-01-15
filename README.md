@@ -6,6 +6,8 @@ A unified asdf plugin repository for managing multiple development tools through
 
 This repository provides an asdf plugin that can install and manage multiple tools. Instead of maintaining separate plugin repositories for each tool, this unified plugin uses a dispatcher pattern to route installation requests to tool-specific implementations.
 
+**Security Note:** We self-manage these plugins instead of using third-party asdf plugin repositories to guard against supply chain attacks. All tool implementations are maintained in this repository and download binaries directly from official source repositories (GitHub releases, official distribution sites, etc.).
+
 ## Supported Tools
 
 This plugin currently supports 22 tools:
@@ -164,4 +166,4 @@ See [CLAUDE.md](CLAUDE.md) for development documentation, including:
 
 ## License
 
-This repository is maintained by SmartestEdu/Formative for internal development tools.
+This repository is maintained by Newsela for internal development tools.
