@@ -15,7 +15,7 @@ declare -A TOOLS=(
   ["jq"]="--version"
   ["yq"]="--version"
   ["kubectl"]="version --client"
-  ["kustomize"]="version --short"
+  ["kustomize"]="version"
   ["kops"]="version"
   ["kubeseal"]="--version"
   ["kubeconform"]="-v"
@@ -58,9 +58,16 @@ for tool in "${!TOOLS[@]}"; do
     continue
   fi
 
-  # Get latest version
-  LATEST=$(asdf list all "$tool" 2>&1 | tail -1)
+  # Get latest version (filter empty lines first)
+  LATEST=$(asdf list all "$tool" 2>&1 | grep -v '^$' | tail -1)
   echo "  Latest version: $LATEST"
+
+  # Skip if no version found
+  if [ -z "$LATEST" ]; then
+    echo -e "  ${RED}✗${NC} No version found"
+    FAIL_COUNT=$((FAIL_COUNT + 1))
+    continue
+  fi
 
   # Install
   echo -n "  Installing $tool $LATEST... "

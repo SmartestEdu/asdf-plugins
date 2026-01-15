@@ -19,19 +19,14 @@ get_download_url() {
   os="$(get_os)"
   arch="$(get_arch)"
 
-  # Map to sinker's naming conventions
-  case "$os" in
-    darwin) os="Darwin" ;;
-    linux) os="Linux" ;;
-  esac
-
+  # Map to sinker's naming conventions (lowercase os, amd64 for arch)
   case "$arch" in
-    amd64) arch="x86_64" ;;
-    arm64) arch="arm64" ;;
+    amd64) arch="amd64" ;;
     *) error_exit "sinker does not support architecture: $arch" ;;
   esac
 
-  echo "https://github.com/${REPO}/releases/download/v${version}/sinker_${version}_${os}_${arch}.tar.gz"
+  # sinker releases use format: sinker-{os}-{arch}
+  echo "https://github.com/${REPO}/releases/download/v${version}/sinker-${os}-${arch}"
 }
 
 download_tool() {
@@ -47,8 +42,8 @@ download_tool() {
   url="$(get_download_url "$version")"
 
   mkdir -p "$download_path/bin"
-  download_file "$url" "$download_path/sinker.tar.gz"
-  extract_tar_gz "$download_path/sinker.tar.gz" "$download_path/bin"
+  # sinker is distributed as a bare binary, not a tarball
+  download_file "$url" "$download_path/bin/sinker"
 }
 
 install_tool() {
