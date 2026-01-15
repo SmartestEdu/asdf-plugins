@@ -29,7 +29,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `amazon-ecr-credential-helper` - Amazon ECR Docker Credential Helper
 
 **Development Tools:**
-- `nodejs` - JavaScript runtime
+- `nodejs` - JavaScript runtime (corepack automatically enabled for yarn/pnpm)
 - `github-cli` - GitHub's official command line tool (gh)
 - `jwt-cli` - JWT encode/decode/sign tool
 - `tmux` - Terminal multiplexer
