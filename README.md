@@ -127,6 +127,25 @@ Most tools support:
 
 Some tools may have limited platform support. Check tool-specific documentation for details.
 
+## System Dependencies
+
+Most tools are distributed as pre-built binaries and require no system dependencies. However, some tools require compilation and need system libraries:
+
+### tmux
+Requires the following system libraries to compile:
+- `libevent` (libevent-dev on Debian/Ubuntu, libevent on macOS via Homebrew)
+- `ncurses` (libncurses-dev on Debian/Ubuntu, ncurses on macOS via Homebrew)
+- Build tools: `gcc`, `make`, `pkg-config`
+
+**Install dependencies:**
+```bash
+# Ubuntu/Debian
+sudo apt-get install libevent-dev libncurses-dev build-essential pkg-config
+
+# macOS
+brew install libevent ncurses pkg-config
+```
+
 ## Environment Variables
 
 ### GitHub API Token
