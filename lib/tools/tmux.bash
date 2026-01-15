@@ -102,7 +102,7 @@ install_tool() {
   # Create a temporary directory for building
   local build_dir
   build_dir="$(mktemp -d)"
-  trap 'rm -rf "$build_dir"' EXIT
+  trap "rm -rf '$build_dir'" EXIT
 
   # Install dependencies
   install_libevent "$install_path" "$build_dir"
