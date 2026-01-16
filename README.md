@@ -29,7 +29,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `amazon-ecr-credential-helper` - Amazon ECR Docker Credential Helper
 
 **Development Tools:**
-- `nodejs` - JavaScript runtime (corepack automatically enabled for yarn/pnpm)
+- `nodejs` - JavaScript runtime (corepack automatically enabled, supports default npm packages)
 - `github-cli` - GitHub's official command line tool (gh)
 - `jwt-cli` - JWT encode/decode/sign tool
 - `tmux` - Terminal multiplexer
@@ -160,6 +160,23 @@ Set `GITHUB_API_TOKEN` to avoid rate limiting when querying GitHub releases:
 ```bash
 export GITHUB_API_TOKEN=your_token_here
 ```
+
+### Node.js Default Packages
+Node.js installations can automatically install global npm packages. Create a file listing packages to install:
+
+**File location:** `$HOME/.default-npm-packages` (or set `ASDF_NPM_DEFAULT_PACKAGES_FILE` to use a custom path)
+
+**File format:**
+```
+# Comments start with #
+typescript
+eslint
+
+# Package-specific flags are preserved
+zx --registry=https://example.com/
+```
+
+Each package is installed one at a time, and installation failures are reported as warnings without failing the Node.js installation.
 
 ## Development
 

@@ -145,7 +145,7 @@ Currently implemented tools (22 tools):
 - `overmind` - Process manager
 - `sinker` - Container image sync tool
 - `tmux` - Terminal multiplexer (compiled from source)
-- `nodejs` - Node.js runtime
+- `nodejs` - Node.js runtime (auto-enables corepack, supports `~/.default-npm-packages`)
 
 ## Code Conventions
 

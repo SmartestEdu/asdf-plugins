@@ -78,5 +78,64 @@ install_tool() {
     "$install_path/bin/corepack" enable --install-directory "$install_path/bin" || echo "Warning: Failed to enable corepack"
   fi
 
+  # Install default npm packages if configured
+  install_default_npm_packages "$install_path"
+
   echo "Installed nodejs to $install_path"
+}
+
+install_default_npm_packages() {
+  local install_path="$1"
+
+  # Resolve packages file location
+  local packages_file="${ASDF_NPM_DEFAULT_PACKAGES_FILE:-$HOME/.default-npm-packages}"
+
+  # Return silently if file doesn't exist (optional feature)
+  if [ ! -f "$packages_file" ]; then
+    return 0
+  fi
+
+  # Check if npm exists
+  if [ ! -f "$install_path/bin/npm" ]; then
+    echo "Warning: npm not found in Node.js installation, skipping default packages"
+    return 0
+  fi
+
+  echo "Installing default npm packages from $packages_file..."
+
+  local line
+  local package_spec
+  local failed_packages=()
+
+  while IFS= read -r line || [ -n "$line" ]; do
+    # Skip empty lines
+    [ -z "$line" ] && continue
+
+    # Skip comments (lines starting with #)
+    [[ "$line" =~ ^[[:space:]]*# ]] && continue
+
+    # Trim leading/trailing whitespace
+    package_spec="$(echo "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+
+    # Skip if empty after trimming
+    [ -z "$package_spec" ] && continue
+
+    # Install package with flags preserved
+    echo "  Installing: $package_spec"
+    if PATH="$install_path/bin:$PATH" "$install_path/bin/npm" install -g $package_spec > /dev/null 2>&1; then
+      echo "    Success: $package_spec"
+    else
+      echo "    Warning: Failed to install $package_spec"
+      failed_packages+=("$package_spec")
+    fi
+  done < "$packages_file"
+
+  # Summary
+  if [ ${#failed_packages[@]} -eq 0 ]; then
+    echo "Successfully installed all default npm packages"
+  else
+    echo "Warning: Failed to install ${#failed_packages[@]} package(s): ${failed_packages[*]}"
+  fi
+
+  return 0  # Always return success to not fail Node.js installation
 }
