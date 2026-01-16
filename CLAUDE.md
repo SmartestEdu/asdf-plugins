@@ -27,6 +27,8 @@ asdf-plugins/
 │       ├── yq.bash
 │       ├── kubectl.bash
 │       └── ... (one file per tool)
+├── shims/                  # Custom shims for specific tools
+│   └── npm                # Auto-reshim wrapper for npm global installs
 └── README.md
 ```
 
@@ -145,7 +147,7 @@ Currently implemented tools (22 tools):
 - `overmind` - Process manager
 - `sinker` - Container image sync tool
 - `tmux` - Terminal multiplexer (compiled from source)
-- `nodejs` - Node.js runtime (auto-enables corepack, supports `~/.default-npm-packages`)
+- `nodejs` - Node.js runtime (auto-enables corepack, supports `~/.default-npm-packages`, auto-reshims after `npm install -g`)
 
 ## Code Conventions
 
