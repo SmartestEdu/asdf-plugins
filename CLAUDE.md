@@ -129,7 +129,7 @@ The utils library provides common functions for tool implementations:
 
 ## Supported Tools
 
-Currently implemented tools (22 tools):
+Currently implemented tools (23 tools):
 - `jq` - JSON processor
 - `yq` - YAML processor
 - `kubectl` - Kubernetes CLI
@@ -148,6 +148,7 @@ Currently implemented tools (22 tools):
 - `sinker` - Container image sync tool
 - `tmux` - Terminal multiplexer (compiled from source)
 - `nodejs` - Node.js runtime (auto-enables corepack, supports `~/.default-npm-packages`, auto-reshims after `npm install -g`)
+- `acli` - Atlassian CLI (always installs latest from Atlassian's servers)
 
 ## Code Conventions
 

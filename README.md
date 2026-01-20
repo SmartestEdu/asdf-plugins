@@ -38,6 +38,9 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `shfmt` - Shell script formatter
 - `promtool` - Prometheus configuration checking tool
 
+**Atlassian:**
+- `acli` - Atlassian CLI (always installs latest version)
+
 **Other:**
 - `caddy` - Fast web server with automatic HTTPS
 - `sinker` - Container image sync tool
@@ -116,6 +119,7 @@ asdf plugin add nodejs https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add shellcheck https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add shfmt https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add promtool https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add acli https://github.com/SmartestEdu/asdf-plugins.git
 ```
 
 ## How It Works

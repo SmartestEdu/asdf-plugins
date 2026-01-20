@@ -36,6 +36,7 @@ TOOLS=(
   "shellcheck"
   "shfmt"
   "promtool"
+  "acli"
 )
 
 echo "=========================================="
