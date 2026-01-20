@@ -7,9 +7,21 @@ set -euo pipefail
 
 list_all_versions() {
   # Atlassian only provides "latest" downloads without versioned archives.
-  # We list "current" as the only version - users always get whatever
-  # Atlassian is currently serving. Check actual version with: acli --version
-  echo "current"
+  # We fetch the current version from the APT repository metadata.
+  # The version format in APT is "1.3.11~stable", we convert to "1.3.11-stable"
+  local version
+  version=$(curl_wrapper -fsSL "https://acli.atlassian.com/linux/deb/dists/stable/main/binary-amd64/Packages" 2>/dev/null \
+    | grep -E "^Version:" \
+    | head -n1 \
+    | sed 's/^Version: //' \
+    | tr '~' '-')
+
+  if [ -n "$version" ]; then
+    echo "$version"
+  else
+    # Fallback if APT metadata fetch fails
+    echo "latest"
+  fi
 }
 
 get_download_url() {
