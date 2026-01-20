@@ -26,8 +26,8 @@ get_download_url() {
     *) error_exit "acli does not support architecture: $arch" ;;
   esac
 
-  # URL pattern: https://acli.atlassian.com/{os}/latest/acli_{os}_{arch}.tar.gz
-  echo "https://acli.atlassian.com/${os}/latest/acli_${os}_${arch}.tar.gz"
+  # URL pattern: https://acli.atlassian.com/{os}/latest/acli_{os}_{arch}/acli
+  echo "https://acli.atlassian.com/${os}/latest/acli_${os}_${arch}/acli"
 }
 
 download_tool() {
@@ -42,9 +42,8 @@ download_tool() {
   local url
   url="$(get_download_url "$version")"
 
-  mkdir -p "$download_path"
-  download_file "$url" "$download_path/acli.tar.gz"
-  extract_tar_gz "$download_path/acli.tar.gz" "$download_path"
+  mkdir -p "$download_path/bin"
+  download_file "$url" "$download_path/bin/acli"
 }
 
 install_tool() {
@@ -53,14 +52,6 @@ install_tool() {
   local download_path="$3"
   local install_path="$4"
 
-  # Find the acli binary - it's inside a directory like acli_X.Y.Z_os_arch/
-  local binary
-  binary=$(find "$download_path" -name "acli" -type f -executable 2>/dev/null | head -n1)
-
-  if [ -z "$binary" ]; then
-    error_exit "Could not find acli binary in extracted archive"
-  fi
-
   mkdir -p "$install_path/bin"
-  install_binary "$binary" "$install_path/bin/acli" "acli"
+  install_binary "$download_path/bin/acli" "$install_path/bin/acli" "acli"
 }
