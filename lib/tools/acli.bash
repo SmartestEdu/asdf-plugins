@@ -64,6 +64,16 @@ install_tool() {
   local download_path="$3"
   local install_path="$4"
 
+  # Verify the downloaded binary matches the requested version
+  # Atlassian only provides "latest" downloads, so we need to check
+  chmod +x "$download_path/bin/acli"
+  local actual_version
+  actual_version=$("$download_path/bin/acli" --version 2>/dev/null | sed 's/^acli version //')
+
+  if [ "$version" != "latest" ] && [ -n "$actual_version" ] && [ "$actual_version" != "$version" ]; then
+    error_exit "Version mismatch: requested $version but Atlassian is serving $actual_version. Only the latest version is available for download."
+  fi
+
   mkdir -p "$install_path/bin"
   install_binary "$download_path/bin/acli" "$install_path/bin/acli" "acli"
 }
