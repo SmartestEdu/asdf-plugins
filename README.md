@@ -36,6 +36,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `overmind` - Process manager for Procfile-based applications
 - `shellcheck` - Shell script analysis tool
 - `shfmt` - Shell script formatter
+- `ripgrep` - Fast recursive grep alternative (rg)
 - `promtool` - Prometheus configuration checking tool
 
 **Atlassian:**
@@ -119,6 +120,7 @@ asdf plugin add nodejs https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add shellcheck https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add shfmt https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add promtool https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add ripgrep https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add acli https://github.com/SmartestEdu/asdf-plugins.git
 ```
 
