@@ -184,6 +184,25 @@ zx --registry=https://example.com/
 
 Each package is installed one at a time, and installation failures are reported as warnings without failing the Node.js installation.
 
+### Node.js Custom Build (Compile from Source)
+
+To compile Node.js from source with custom build options, set any of these environment variables before installing:
+
+| Variable | Purpose |
+|---|---|
+| `NODE_CONFIGURE_OPTS` | Additional `./configure` flags |
+| `NODE_MAKE_OPTS` | Additional `make` flags |
+| `NODE_MAKE_INSTALL_OPTS` | Additional `make install` flags |
+
+When any of these are set, the plugin uses [node-build](https://github.com/nodenv/node-build) to compile from source instead of downloading a precompiled binary.
+
+**Example — enable pointer compression:**
+```bash
+NODE_CONFIGURE_OPTS="--experimental-enable-pointer-compression" asdf install nodejs 22.14.0
+```
+
+Note: Compiling from source requires build tools (`gcc`, `make`, `python3`, etc.) and takes significantly longer than a binary install.
+
 ## Development
 
 See [CLAUDE.md](CLAUDE.md) for development documentation, including:
