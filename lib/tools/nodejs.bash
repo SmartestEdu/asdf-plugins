@@ -56,7 +56,7 @@ ensure_node_build() {
     return 0
   fi
 
-  echo "Installing node-build for source compilation..."
+  echo "Installing node-build for source compilation..." >&2
   rm -rf "$node_build_dir"
   git clone --depth 1 https://github.com/nodenv/node-build.git "$node_build_dir" \
     || error_exit "Failed to clone node-build. Ensure git is available."
