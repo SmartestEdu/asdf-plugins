@@ -37,6 +37,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `shellcheck` - Shell script analysis tool
 - `shfmt` - Shell script formatter
 - `ripgrep` - Fast recursive grep alternative (rg)
+- `ast-grep` - A fast and polyglot tool for code searching, linting, rewriting at scale (sg)
 - `promtool` - Prometheus configuration checking tool
 
 **Atlassian:**
@@ -121,6 +122,7 @@ asdf plugin add shellcheck https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add shfmt https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add promtool https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add ripgrep https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add ast-grep https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add acli https://github.com/SmartestEdu/asdf-plugins.git
 ```
 
