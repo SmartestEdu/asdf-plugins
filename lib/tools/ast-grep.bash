@@ -32,10 +32,10 @@ get_download_url() {
   target="$(get_target)"
 
   # Release assets are in format: app-<target>.zip
-  # Note: The version in the tag usually has 'v' prefix, but list_github_versions removes it.
-  # If the tag is v0.41.1, the download URL is:
-  # https://github.com/ast-grep/ast-grep/releases/download/v0.41.1/app-x86_64-unknown-linux-gnu.zip
-  echo "https://github.com/${REPO}/releases/download/v${version}/app-${target}.zip"
+  # Note: The version in the tag does NOT have a 'v' prefix.
+  # If the tag is 0.41.1, the download URL is:
+  # https://github.com/ast-grep/ast-grep/releases/download/0.41.1/app-x86_64-unknown-linux-gnu.zip
+  echo "https://github.com/${REPO}/releases/download/${version}/app-${target}.zip"
 }
 
 download_tool() {
