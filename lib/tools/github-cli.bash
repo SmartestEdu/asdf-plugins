@@ -32,7 +32,12 @@ get_download_url() {
     *) error_exit "github-cli does not support architecture: $arch" ;;
   esac
 
-  echo "https://github.com/${REPO}/releases/download/v${version}/gh_${version}_${os}_${arch}.tar.gz"
+  local ext="tar.gz"
+  if [ "$os" = "macOS" ]; then
+    ext="zip"
+  fi
+
+  echo "https://github.com/${REPO}/releases/download/v${version}/gh_${version}_${os}_${arch}.${ext}"
 }
 
 download_tool() {
@@ -58,8 +63,14 @@ download_tool() {
   arch="$(get_arch)"
 
   mkdir -p "$download_path"
-  download_file "$url" "$download_path/gh.tar.gz"
-  extract_tar_gz "$download_path/gh.tar.gz" "$download_path"
+
+  if [ "$os" = "macOS" ]; then
+    download_file "$url" "$download_path/gh.zip"
+    extract_zip "$download_path/gh.zip" "$download_path"
+  else
+    download_file "$url" "$download_path/gh.tar.gz"
+    extract_tar_gz "$download_path/gh.tar.gz" "$download_path"
+  fi
 
   # Move binary to expected location
   mkdir -p "$download_path/bin"

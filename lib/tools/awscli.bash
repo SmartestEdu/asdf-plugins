@@ -19,11 +19,10 @@ get_download_url() {
   os="$(get_os)"
   arch="$(get_arch)"
 
-  # AWS CLI uses different URLs for different platforms
   case "$os" in
     darwin)
-      # macOS uses pkg installer, but we can use the bundled installer
-      echo "https://awscli.amazonaws.com/awscli-exe-${os}-${arch}.zip"
+      # macOS uses a universal .pkg installer
+      echo "https://awscli.amazonaws.com/AWSCLIV2-${version}.pkg"
       ;;
     linux)
       case "$arch" in
@@ -31,7 +30,7 @@ get_download_url() {
         arm64) arch="aarch64" ;;
         *) error_exit "awscli does not support architecture: $arch on Linux" ;;
       esac
-      echo "https://awscli.amazonaws.com/awscli-exe-${os}-${arch}.zip"
+      echo "https://awscli.amazonaws.com/awscli-exe-${os}-${arch}-${version}.zip"
       ;;
     *)
       error_exit "awscli does not support OS: $os"
@@ -52,8 +51,20 @@ download_tool() {
   url="$(get_download_url "$version")"
 
   mkdir -p "$download_path"
-  download_file "$url" "$download_path/awscli.zip"
-  extract_zip "$download_path/awscli.zip" "$download_path"
+
+  local os
+  os="$(get_os)"
+
+  case "$os" in
+    darwin)
+      download_file "$url" "$download_path/awscli.pkg"
+      pkgutil --expand-full "$download_path/awscli.pkg" "$download_path/expanded"
+      ;;
+    linux)
+      download_file "$url" "$download_path/awscli.zip"
+      extract_zip "$download_path/awscli.zip" "$download_path"
+      ;;
+  esac
 }
 
 install_tool() {
@@ -62,8 +73,30 @@ install_tool() {
   local download_path="$3"
   local install_path="$4"
 
-  # Run the AWS CLI installer
-  "$download_path/aws/install" --install-dir "$install_path" --bin-dir "$install_path/bin" || error_exit "Failed to install awscli"
+  local os
+  os="$(get_os)"
+
+  case "$os" in
+    darwin)
+      local payload_dir="$download_path/expanded/aws-cli.pkg/Payload/aws-cli"
+      if [ ! -d "$payload_dir" ]; then
+        payload_dir="$(find "$download_path/expanded" -type d -name "aws-cli" -path "*/Payload/*" | head -1)"
+      fi
+      if [ ! -d "$payload_dir" ]; then
+        error_exit "Could not find aws-cli in expanded pkg"
+      fi
+
+      mkdir -p "$install_path"
+      cp -R "$payload_dir" "$install_path/aws-cli"
+
+      mkdir -p "$install_path/bin"
+      ln -sf "$install_path/aws-cli/v2/current/bin/aws" "$install_path/bin/aws"
+      ln -sf "$install_path/aws-cli/v2/current/bin/aws_completer" "$install_path/bin/aws_completer"
+      ;;
+    linux)
+      "$download_path/aws/install" --install-dir "$install_path" --bin-dir "$install_path/bin" || error_exit "Failed to install awscli"
+      ;;
+  esac
 
   echo "Installed awscli to $install_path/bin/aws"
 }

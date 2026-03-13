@@ -19,9 +19,16 @@ get_download_url() {
   os="$(get_os)"
   arch="$(get_arch)"
 
-  # Map to sinker's naming conventions (lowercase os, amd64 for arch)
+  # sinker only provides amd64 binaries; on macOS arm64, Rosetta 2 handles it
   case "$arch" in
     amd64) arch="amd64" ;;
+    arm64)
+      if [ "$os" = "darwin" ]; then
+        arch="amd64"
+      else
+        error_exit "sinker does not support architecture: $arch on $os"
+      fi
+      ;;
     *) error_exit "sinker does not support architecture: $arch" ;;
   esac
 

@@ -20,6 +20,10 @@ get_download_url() {
   arch="$(get_arch)"
 
   # Map to caddy's naming conventions
+  case "$os" in
+    darwin) os="mac" ;;
+  esac
+
   case "$arch" in
     amd64) arch="amd64" ;;
     arm64) arch="arm64" ;;
