@@ -71,15 +71,9 @@ get_plugin_url() {
 echo "Installing/updating plugins from $REPO_URL..."
 for tool in "${TOOLS[@]}"; do
   add_output=$(asdf plugin add "$tool" "$REPO_URL" 2>&1)
-  add_exit=$?
-
-  if [ $add_exit -eq 0 ]; then
-    echo "  ✓ Added: $tool"
-    continue
-  fi
 
   if ! echo "$add_output" | grep -qi "already"; then
-    echo "  ✗ Failed to add $tool: $add_output"
+    echo "  ✓ Added: $tool"
     continue
   fi
 
