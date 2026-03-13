@@ -58,32 +58,45 @@ if ! command -v asdf &>/dev/null; then
   exit 1
 fi
 
+get_plugin_url() {
+  local tool="$1"
+  local plugin_dir="${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/$tool"
+  if [ -d "$plugin_dir/.git" ]; then
+    git -C "$plugin_dir" remote get-url origin 2>/dev/null || echo ""
+  else
+    echo ""
+  fi
+}
+
 echo "Installing/updating plugins from $REPO_URL..."
 for tool in "${TOOLS[@]}"; do
-  if asdf plugin list 2>/dev/null | grep -q "^${tool}$"; then
-    # Plugin exists, check if it has the correct URL
-    existing_url=$(asdf plugin list --urls 2>/dev/null | grep "^${tool}" | awk '{print $2}')
+  add_output=$(asdf plugin add "$tool" "$REPO_URL" 2>&1)
+  add_exit=$?
 
-    if [ "$existing_url" = "$REPO_URL" ]; then
-      echo "  Updating: $tool (already installed from correct URL)"
-      if asdf plugin update "$tool" 2>&1 | sed 's/^/    /'; then
-        echo "    ✓ Updated"
-      else
-        echo "    ✗ Update failed"
-      fi
+  if [ $add_exit -eq 0 ]; then
+    echo "  ✓ Added: $tool"
+    continue
+  fi
+
+  if ! echo "$add_output" | grep -qi "already"; then
+    echo "  ✗ Failed to add $tool: $add_output"
+    continue
+  fi
+
+  existing_url=$(get_plugin_url "$tool")
+
+  if [ "$existing_url" = "$REPO_URL" ]; then
+    echo "  Updating: $tool"
+    if asdf plugin update "$tool" 2>&1 | sed 's/^/    /'; then
+      echo "    ✓ Updated"
     else
-      echo "  Replacing: $tool (was installed from $existing_url)"
-      asdf plugin remove "$tool" 2>&1 | sed 's/^/    /' || true
-      if asdf plugin add "$tool" "$REPO_URL" 2>&1 | sed 's/^/    /'; then
-        echo "    ✓ Added"
-      else
-        echo "    ✗ Failed"
-      fi
+      echo "    ✗ Update failed"
     fi
   else
-    echo "  Adding: $tool"
+    echo "  Replacing: $tool (was installed from $existing_url)"
+    asdf plugin remove "$tool" 2>&1 | sed 's/^/    /' || true
     if asdf plugin add "$tool" "$REPO_URL" 2>&1 | sed 's/^/    /'; then
-      echo "    ✓ Added"
+      echo "    ✓ Replaced"
     else
       echo "    ✗ Failed"
     fi
