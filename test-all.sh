@@ -31,6 +31,7 @@ declare -A TOOLS=(
   ["shellcheck"]="--version"
   ["shfmt"]="--version"
   ["promtool"]="version"
+  ["mergiraf"]="--version"
 )
 
 # Tools that need special handling or are slow to install

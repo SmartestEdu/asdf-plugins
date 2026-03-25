@@ -39,6 +39,7 @@ TOOLS=(
   "ripgrep"
   "ast-grep"
   "acli"
+  "mergiraf"
 )
 
 echo "=========================================="

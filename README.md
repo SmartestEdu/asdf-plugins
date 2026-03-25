@@ -38,6 +38,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `shfmt` - Shell script formatter
 - `ripgrep` - Fast recursive grep alternative (rg)
 - `ast-grep` - A fast and polyglot tool for code searching, linting, rewriting at scale (sg)
+- `mergiraf` - Syntax-aware merge driver for git
 - `promtool` - Prometheus configuration checking tool
 
 **Atlassian:**
@@ -124,6 +125,7 @@ asdf plugin add promtool https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add ripgrep https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add ast-grep https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add acli https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add mergiraf https://github.com/SmartestEdu/asdf-plugins.git
 ```
 
 ## How It Works
