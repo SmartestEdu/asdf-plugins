@@ -40,6 +40,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `ast-grep` - A fast and polyglot tool for code searching, linting, rewriting at scale (sg)
 - `mergiraf` - Syntax-aware merge driver for git
 - `promtool` - Prometheus configuration checking tool
+- `rtk` - Rust Token Killer: CLI proxy that reduces LLM token consumption
 
 **Atlassian:**
 - `acli` - Atlassian CLI (always installs latest version)
@@ -126,6 +127,7 @@ asdf plugin add ripgrep https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add ast-grep https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add acli https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add mergiraf https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add rtk https://github.com/SmartestEdu/asdf-plugins.git
 ```
 
 ## How It Works

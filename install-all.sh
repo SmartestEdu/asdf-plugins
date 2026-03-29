@@ -40,6 +40,7 @@ TOOLS=(
   "ast-grep"
   "acli"
   "mergiraf"
+  "rtk"
 )
 
 echo "=========================================="
