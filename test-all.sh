@@ -32,6 +32,7 @@ declare -A TOOLS=(
   ["shfmt"]="--version"
   ["promtool"]="version"
   ["mergiraf"]="--version"
+  ["knope"]="--version"
 )
 
 # Tools that need special handling or are slow to install
