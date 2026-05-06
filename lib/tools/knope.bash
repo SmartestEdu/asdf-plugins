@@ -46,12 +46,16 @@ download_tool() {
     error_exit "knope only supports version installs, not ref installs"
   fi
 
-  local url
+  local url target
   url="$(get_download_url "$version")"
+  target="$(get_target)"
 
   mkdir -p "$download_path"
   download_file "$url" "$download_path/knope.tgz"
   extract_tar_gz "$download_path/knope.tgz" "$download_path"
+
+  mkdir -p "$download_path/bin"
+  mv "$download_path/knope-${target}/knope" "$download_path/bin/"
 }
 
 install_tool() {
@@ -61,5 +65,5 @@ install_tool() {
   local install_path="$4"
 
   mkdir -p "$install_path/bin"
-  install_binary "$download_path/knope" "$install_path/bin/knope" "knope"
+  install_binary "$download_path/bin/knope" "$install_path/bin/knope" "knope"
 }
