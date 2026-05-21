@@ -33,6 +33,7 @@ declare -A TOOLS=(
   ["promtool"]="version"
   ["mergiraf"]="--version"
   ["knope"]="--version"
+  ["aws-vault"]="--version"
 )
 
 # Tools that need special handling or are slow to install

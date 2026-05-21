@@ -26,6 +26,7 @@ TOOLS=(
   "awscli"
   "aws-iam-authenticator"
   "amazon-ecr-credential-helper"
+  "aws-vault"
   "github-cli"
   "jwt-cli"
   "nodejs"
