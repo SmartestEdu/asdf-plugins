@@ -27,7 +27,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `awscli` - AWS Command Line Interface
 - `aws-iam-authenticator` - AWS IAM Authenticator for Kubernetes
 - `amazon-ecr-credential-helper` - Amazon ECR Docker Credential Helper
-- `aws-vault` - Securely store AWS credentials and serve short-lived session credentials via a local endpoint (Linux only; macOS users: `brew install aws-vault`)
+- `aws-vault` - Securely store AWS credentials and serve short-lived session credentials via a local endpoint (uses the [ByteNess fork](https://github.com/ByteNess/aws-vault))
 
 **Development Tools:**
 - `nodejs` - JavaScript runtime (corepack automatically enabled, supports default npm packages)

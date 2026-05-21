@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 
 # aws-vault - secure AWS credential storage; serves short-lived session credentials
-# Repository: https://github.com/99designs/aws-vault
+# Repository: https://github.com/ByteNess/aws-vault
+#
+# Tracking the ByteNess fork rather than the original 99designs/aws-vault: the
+# upstream's release cadence has slowed significantly while ByteNess is actively
+# cutting releases, and ByteNess ships bare darwin binaries (the upstream ships
+# .dmg only on macOS, which would require hdiutil mounting).
 
 set -euo pipefail
 
-readonly REPO="99designs/aws-vault"
+readonly REPO="ByteNess/aws-vault"
 
 list_all_versions() {
   list_github_versions "$REPO" | sort_versions | tr '\n' ' '
@@ -19,18 +24,25 @@ get_download_url() {
   os="$(get_os)"
   arch="$(get_arch)"
 
-  # Upstream darwin releases ship as .dmg only (no bare binary). Mac users
-  # should install via `brew install aws-vault` until DMG handling is added.
-  if [ "$os" != "linux" ]; then
-    error_exit "aws-vault asdf plugin currently supports linux only; on macOS use 'brew install aws-vault'"
-  fi
-
-  case "$arch" in
-    amd64|arm64|arm7|386) ;;
-    *) error_exit "aws-vault does not support linux $arch" ;;
+  case "$os" in
+    linux)
+      case "$arch" in
+        amd64|arm64|ppc64le) ;;
+        *) error_exit "aws-vault does not support linux $arch" ;;
+      esac
+      ;;
+    darwin)
+      case "$arch" in
+        amd64|arm64) ;;
+        *) error_exit "aws-vault does not support darwin $arch" ;;
+      esac
+      ;;
+    *)
+      error_exit "aws-vault does not support OS: $os"
+      ;;
   esac
 
-  echo "https://github.com/${REPO}/releases/download/v${version}/aws-vault-linux-${arch}"
+  echo "https://github.com/${REPO}/releases/download/v${version}/aws-vault-${os}-${arch}"
 }
 
 download_tool() {
