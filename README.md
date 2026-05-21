@@ -27,6 +27,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `awscli` - AWS Command Line Interface
 - `aws-iam-authenticator` - AWS IAM Authenticator for Kubernetes
 - `amazon-ecr-credential-helper` - Amazon ECR Docker Credential Helper
+- `aws-vault` - Securely store AWS credentials and serve short-lived session credentials via a local endpoint (uses the [ByteNess fork](https://github.com/ByteNess/aws-vault))
 
 **Development Tools:**
 - `nodejs` - JavaScript runtime (corepack automatically enabled, supports default npm packages)
@@ -111,6 +112,7 @@ asdf plugin add kustomize https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add kops https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add kubeseal https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add aws-iam-authenticator https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add aws-vault https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add minikube https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add kubeconform https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add caddy https://github.com/SmartestEdu/asdf-plugins.git
