@@ -211,14 +211,6 @@ NODE_CONFIGURE_OPTS="--experimental-enable-pointer-compression" asdf install nod
 
 Note: Compiling from source requires build tools (`gcc`, `make`, `python3`, etc.) and takes significantly longer than a binary install.
 
-## Development
-
-See [CLAUDE.md](CLAUDE.md) for development documentation, including:
-- Architecture overview
-- How to add new tools
-- Shared utilities reference
-- Testing procedures
-
 ## License
 
-This repository is maintained by Newsela for internal development tools.
+MIT
