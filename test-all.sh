@@ -34,6 +34,10 @@ declare -A TOOLS=(
   ["mergiraf"]="--version"
   ["knope"]="--version"
   ["aws-vault"]="--version"
+  ["harnx"]="--version"
+  ["luchta"]="--version"
+  ["rclone"]="version"
+  ["tsgolint"]="--version"
 )
 
 # Tools that need special handling or are slow to install

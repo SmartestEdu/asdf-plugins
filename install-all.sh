@@ -43,6 +43,10 @@ TOOLS=(
   "mergiraf"
   "rtk"
   "knope"
+  "harnx"
+  "luchta"
+  "rclone"
+  "tsgolint"
 )
 
 echo "=========================================="
