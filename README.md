@@ -42,6 +42,9 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `mergiraf` - Syntax-aware merge driver for git
 - `promtool` - Prometheus configuration checking tool
 - `rtk` - Rust Token Killer: CLI proxy that reduces LLM token consumption
+- `harnx` - Agent harness runner ([dobesv/harnx](https://github.com/dobesv/harnx))
+- `luchta` - Worker orchestration tool ([dobesv/luchta](https://github.com/dobesv/luchta))
+- `tsgolint` - Type-aware linting binary for `oxlint --type-aware` ([oxlint-tsgolint](https://github.com/robinnagpal-newsela/oxlint-tsgolint))
 
 **Atlassian:**
 - `acli` - Atlassian CLI (always installs latest version)
@@ -49,6 +52,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 **Other:**
 - `caddy` - Fast web server with automatic HTTPS
 - `sinker` - Container image sync tool
+- `rclone` - Sync files and directories to and from cloud storage
 
 ## Installation
 
@@ -130,6 +134,10 @@ asdf plugin add ast-grep https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add acli https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add mergiraf https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add rtk https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add harnx https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add luchta https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add rclone https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add tsgolint https://github.com/SmartestEdu/asdf-plugins.git
 ```
 
 ## How It Works
@@ -174,6 +182,14 @@ Set `GITHUB_API_TOKEN` to avoid rate limiting when querying GitHub releases:
 ```bash
 export GITHUB_API_TOKEN=your_token_here
 ```
+
+### tsgolint (oxlint --type-aware)
+oxlint does **not** discover `tsgolint` on `PATH`. Point oxlint at the installed
+binary by exporting `OXLINT_TSGOLINT_PATH` so `oxlint --type-aware` uses it:
+```bash
+export OXLINT_TSGOLINT_PATH="$(asdf where tsgolint)/bin/tsgolint"
+```
+Add that to your shell profile (or your repo's lint script).
 
 ### Node.js Default Packages
 Node.js installations can automatically install global npm packages. Create a file listing packages to install:
