@@ -155,7 +155,7 @@ install_from_binary() {
   esac
 
   # Copy the extracted directory contents
-  cp -r "$download_path/node-v${version}-${os}-${arch}"/* "$install_path/"
+  cp -R "$download_path/node-v${version}-${os}-${arch}"/* "$install_path/"
 }
 
 install_default_npm_packages() {
