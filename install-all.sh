@@ -47,6 +47,7 @@ TOOLS=(
   "luchta"
   "rclone"
   "tsgolint"
+  "reviewdog"
 )
 
 echo "=========================================="

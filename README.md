@@ -45,6 +45,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `harnx` - Agent harness runner ([dobesv/harnx](https://github.com/dobesv/harnx))
 - `luchta` - Worker orchestration tool ([dobesv/luchta](https://github.com/dobesv/luchta))
 - `tsgolint` - Type-aware linting binary for `oxlint --type-aware` ([oxlint-tsgolint](https://github.com/robinnagpal-newsela/oxlint-tsgolint))
+- `reviewdog` - Automated code review tool integrated with any code analysis tools ([reviewdog/reviewdog](https://github.com/reviewdog/reviewdog))
 
 **Atlassian:**
 - `acli` - Atlassian CLI (always installs latest version)
@@ -138,6 +139,7 @@ asdf plugin add harnx https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add luchta https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add rclone https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add tsgolint https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add reviewdog https://github.com/SmartestEdu/asdf-plugins.git
 ```
 
 ## How It Works
