@@ -38,6 +38,7 @@ declare -A TOOLS=(
   ["luchta"]="--version"
   ["rclone"]="version"
   ["tsgolint"]="--version"
+  ["reviewdog"]="-version"
 )
 
 # Tools that need special handling or are slow to install
