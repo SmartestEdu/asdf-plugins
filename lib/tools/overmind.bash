@@ -20,6 +20,12 @@ get_download_url() {
   arch="$(get_arch)"
 
   # Map to overmind's naming conventions
+  case "$os" in
+    darwin) os="macos" ;;
+    linux) os="linux" ;;
+    *) error_exit "overmind does not support operating system: $os" ;;
+  esac
+
   case "$arch" in
     amd64) arch="amd64" ;;
     arm64) arch="arm64" ;;

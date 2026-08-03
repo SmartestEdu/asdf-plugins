@@ -8,6 +8,7 @@ set -euo pipefail
 readonly REPO="tmux/tmux"
 readonly LIBEVENT_VERSION="2.1.12"
 readonly NCURSES_VERSION="6.4"
+readonly UTF8PROC_VERSION="2.9.0"
 
 list_all_versions() {
   list_github_versions "$REPO" | sort_versions | tr '\n' ' '
@@ -22,20 +23,17 @@ download_tool() {
     error_exit "tmux only supports version installs, not ref installs"
   fi
 
-  # Download tmux source from GitHub archive (works better with autogen.sh)
-  local url="https://github.com/${REPO}/archive/${version}.zip"
+  # Use the release tarball rather than the git archive: it ships a
+  # pre-generated ./configure, so autoconf/automake are not required.
+  local url="https://github.com/${REPO}/releases/download/${version}/tmux-${version}.tar.gz"
 
   mkdir -p "$download_path"
 
-  if ! command_exists unzip; then
-    error_exit "unzip is required to install tmux. Please install unzip first."
-  fi
-
   echo "Downloading tmux ${version}..."
-  download_file "$url" "$download_path/tmux.zip"
+  download_file "$url" "$download_path/tmux.tar.gz"
 
   echo "Extracting tmux..."
-  unzip -qo "$download_path/tmux.zip" -d "$download_path" || error_exit "Failed to extract tmux"
+  extract_tar_gz "$download_path/tmux.tar.gz" "$download_path"
 }
 
 install_libevent() {
@@ -53,8 +51,15 @@ install_libevent() {
 
   cd "libevent-${LIBEVENT_VERSION}-stable"
 
+  # tmux links only libevent_core, which needs no openssl. Disabling it avoids
+  # requiring openssl headers/pkg-config on the build host.
   echo "Configuring libevent..."
-  ./configure --prefix="$install_path" --disable-shared || error_exit "Failed to configure libevent"
+  ./configure --prefix="$install_path" \
+    --disable-shared \
+    --disable-openssl \
+    --disable-samples \
+    --disable-libevent-regress \
+    || error_exit "Failed to configure libevent"
 
   echo "Building libevent..."
   make -j"${ASDF_CONCURRENCY:-1}" || error_exit "Failed to build libevent"
@@ -93,6 +98,28 @@ install_ncurses() {
   make install || error_exit "Failed to install ncurses"
 }
 
+install_utf8proc() {
+  local install_path="$1"
+  local tmp_dir="$2"
+
+  echo "Building utf8proc ${UTF8PROC_VERSION}..."
+
+  cd "$tmp_dir"
+
+  local utf8proc_url="https://github.com/JuliaStrings/utf8proc/archive/refs/tags/v${UTF8PROC_VERSION}.tar.gz"
+
+  curl_wrapper -fsSL -o utf8proc.tar.gz "$utf8proc_url" || error_exit "Failed to download utf8proc"
+  tar -zxf utf8proc.tar.gz || error_exit "Failed to extract utf8proc"
+
+  cd "utf8proc-${UTF8PROC_VERSION}"
+
+  # prefix must be set at build time too: the dylib's install_name is baked in
+  # from $libdir during linking, not rewritten at install time.
+  echo "Installing utf8proc..."
+  make prefix="$install_path" -j"${ASDF_CONCURRENCY:-1}" || error_exit "Failed to build utf8proc"
+  make prefix="$install_path" install || error_exit "Failed to install utf8proc"
+}
+
 install_tool() {
   local install_type="$1"
   local version="$2"
@@ -107,17 +134,24 @@ install_tool() {
   # Install dependencies
   install_libevent "$install_path" "$build_dir"
   install_ncurses "$install_path" "$build_dir"
+  install_utf8proc "$install_path" "$build_dir"
 
   # Now compile tmux
   cd "$download_path/tmux-${version}"
 
-  echo "Running autogen for tmux..."
-  ./autogen.sh || error_exit "Failed to run autogen.sh"
-
+  # The release tarball already contains ./configure, so autogen.sh (and with it
+  # autoconf/automake) is not needed. CPPFLAGS is required because pkg-config may
+  # be absent, in which case configure falls back to plain header/library probes.
   echo "Configuring tmux..."
+  # The utf8proc probe uses PKG_CHECK_MODULES with no fallback, so hand it the
+  # flags directly rather than depending on pkg-config being installed.
   PKG_CONFIG_PATH="$install_path/lib/pkgconfig" \
+  CPPFLAGS="-I$install_path/include -I$install_path/include/ncurses" \
   LDFLAGS="-L$install_path/lib -Wl,-rpath,$install_path/lib" \
+  LIBUTF8PROC_CFLAGS="-I$install_path/include" \
+  LIBUTF8PROC_LIBS="-L$install_path/lib -lutf8proc" \
   ./configure --prefix="$install_path" \
+    --enable-utf8proc \
     || error_exit "Failed to configure tmux"
 
   echo "Building tmux..."
