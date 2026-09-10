@@ -37,6 +37,7 @@ TOOLS=(
   "shellcheck"
   "shfmt"
   "promtool"
+  "tempo"
   "ripgrep"
   "ast-grep"
   "acli"

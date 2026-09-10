@@ -41,6 +41,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `ast-grep` - A fast and polyglot tool for code searching, linting, rewriting at scale (sg)
 - `mergiraf` - Syntax-aware merge driver for git
 - `promtool` - Prometheus configuration checking tool
+- `tempo` - Grafana Tempo configuration validation and `tempo-cli` query/debug tools (Linux amd64/arm64)
 - `rtk` - Rust Token Killer: CLI proxy that reduces LLM token consumption
 - `harnx` - Agent harness runner ([dobesv/harnx](https://github.com/dobesv/harnx))
 - `luchta` - Worker orchestration tool ([dobesv/luchta](https://github.com/dobesv/luchta))
@@ -130,6 +131,7 @@ asdf plugin add nodejs https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add shellcheck https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add shfmt https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add promtool https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add tempo https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add ripgrep https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add ast-grep https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add acli https://github.com/SmartestEdu/asdf-plugins.git
@@ -162,6 +164,26 @@ Some tools may have limited platform support. Check tool-specific documentation 
 ## System Dependencies
 
 Most tools are distributed as pre-built binaries and require no system dependencies.
+
+### Tempo
+
+The `tempo` plugin installs both `tempo` and `tempo-cli` from official
+[Grafana Tempo releases](https://github.com/grafana/tempo/releases).
+Configuration validation uses the `tempo` binary:
+
+```bash
+asdf plugin add tempo https://github.com/SmartestEdu/asdf-plugins.git
+asdf install tempo 2.10.7
+asdf set tempo 2.10.7
+tempo -config.file=tempo.yaml -config.verify=true
+```
+
+Use the same version as your deployed Tempo. The k8s-manifests repository pins
+this version in `.tool-versions`; its `tools/scripts/validate-tempo-config.sh`
+automatically uses `tempo` from `PATH` to validate rendered TempoStack configs.
+
+This plugin supports Linux amd64 and arm64. Current upstream releases do not
+publish macOS binaries; on macOS, use the validator's Docker fallback.
 
 ### tmux
 tmux is compiled from source and bundles its dependencies (libevent and ncurses). Only basic build tools are required:
