@@ -31,6 +31,7 @@ declare -A TOOLS=(
   ["shellcheck"]="--version"
   ["shfmt"]="--version"
   ["promtool"]="version"
+  ["tempo"]="-version"
   ["mergiraf"]="--version"
   ["knope"]="--version"
   ["aws-vault"]="--version"
