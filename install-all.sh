@@ -49,6 +49,7 @@ TOOLS=(
   "rclone"
   "tsgolint"
   "reviewdog"
+  "dyff"
 )
 
 echo "=========================================="
