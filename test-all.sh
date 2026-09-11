@@ -40,6 +40,7 @@ declare -A TOOLS=(
   ["rclone"]="version"
   ["tsgolint"]="--version"
   ["reviewdog"]="-version"
+  ["dyff"]="version"
 )
 
 # Tools that need special handling or are slow to install
