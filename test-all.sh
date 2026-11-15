@@ -41,6 +41,7 @@ declare -A TOOLS=(
   ["tsgolint"]="--version"
   ["reviewdog"]="-version"
   ["dyff"]="version"
+  ["fallow"]="--version"
 )
 
 # Tools that need special handling or are slow to install
