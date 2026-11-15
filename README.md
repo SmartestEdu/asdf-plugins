@@ -48,6 +48,7 @@ This repository provides an asdf plugin that can install and manage multiple too
 - `tsgolint` - Type-aware linting binary for `oxlint --type-aware` ([oxlint-tsgolint](https://github.com/robinnagpal-newsela/oxlint-tsgolint))
 - `reviewdog` - Automated code review tool integrated with any code analysis tools ([reviewdog/reviewdog](https://github.com/reviewdog/reviewdog))
 - `dyff` - YAML and Kubernetes manifest comparison tool ([homeport/dyff](https://github.com/homeport/dyff))
+- `fallow` - Codebase analysis for TypeScript/JavaScript: unused code, duplication, circular deps, complexity hotspots; also installs companion binaries like `fallow-lsp` and `fallow-mcp` ([fallow-rs/fallow](https://github.com/fallow-rs/fallow))
 
 **Atlassian:**
 - `acli` - Atlassian CLI (always installs latest version)
@@ -144,6 +145,7 @@ asdf plugin add rclone https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add tsgolint https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add reviewdog https://github.com/SmartestEdu/asdf-plugins.git
 asdf plugin add dyff https://github.com/SmartestEdu/asdf-plugins.git
+asdf plugin add fallow https://github.com/SmartestEdu/asdf-plugins.git
 ```
 
 ## How It Works

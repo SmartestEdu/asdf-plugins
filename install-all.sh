@@ -50,6 +50,7 @@ TOOLS=(
   "tsgolint"
   "reviewdog"
   "dyff"
+  "fallow"
 )
 
 echo "=========================================="
