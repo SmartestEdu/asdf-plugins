@@ -70,9 +70,8 @@ if ! command -v asdf &>/dev/null; then
   exit 1
 fi
 
-# asdf 0.16 and later have no asdf.sh to source, so nothing adds the shims
-# folder to PATH unless the user does. Without it, every tool asdf installs
-# is "command not found".
+# asdf does not add its shims folder to PATH, so until the user does, every
+# tool asdf installs is "command not found".
 warn_if_shims_not_on_path() {
   local shims="${ASDF_DATA_DIR:-$HOME/.asdf}/shims"
   case ":$PATH:" in
