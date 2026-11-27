@@ -70,6 +70,42 @@ if ! command -v asdf &>/dev/null; then
   exit 1
 fi
 
+# asdf does not add its shims folder to PATH, so until the user does, every
+# tool asdf installs is "command not found".
+warn_if_shims_not_on_path() {
+  local shims="${ASDF_DATA_DIR:-$HOME/.asdf}/shims"
+  case ":$PATH:" in
+    *":$shims:"*) return ;;
+  esac
+
+  # This script runs under bash even for zsh users, so use the login shell.
+  local rc=""
+  case "${SHELL##*/}" in
+    zsh) rc="${ZDOTDIR:-$HOME}/.zshrc" ;;
+    bash)
+      # macOS terminals start login shells, which read .bash_profile.
+      if [ "$(uname -s)" = "Darwin" ]; then
+        rc="$HOME/.bash_profile"
+      else
+        rc="$HOME/.bashrc"
+      fi
+      ;;
+  esac
+
+  echo "Warning: $shims is not on your PATH,"
+  echo "so tools installed by asdf will not be found."
+  if [ -n "$rc" ]; then
+    echo "Add this line to $rc if it is not there, then open a new terminal:"
+    echo ""
+    # shellcheck disable=SC2016 # Printed for the user to paste, unexpanded.
+    echo '    export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"'
+  else
+    echo "Add it to PATH in your shell's startup file, as described in"
+    echo "https://asdf-vm.com/guide/getting-started.html"
+  fi
+  echo ""
+}
+
 get_plugin_url() {
   local tool="$1"
   local plugin_dir="${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/$tool"
@@ -124,3 +160,5 @@ echo "  asdf list all jq"
 echo "  asdf install jq latest"
 echo "  asdf set -u jq latest"
 echo ""
+
+warn_if_shims_not_on_path
